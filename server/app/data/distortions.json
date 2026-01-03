@@ -1,0 +1,124 @@
+{
+  "distortions": [
+    {
+      "id": "all_or_nothing",
+      "name": "All-or-Nothing Thinking",
+      "description": "Seeing things in black-and-white categories. If your performance falls short of perfect, you see yourself as a total failure.",
+      "examples": [
+        "I made one mistake, so I'm a complete failure",
+        "If I can't do it perfectly, there's no point in trying",
+        "Either I'm the best or I'm the worst"
+      ],
+      "keywords": ["always", "never", "completely", "totally", "perfect", "ruined", "failure", "disaster"],
+      "reframe_prompt": "Look for shades of gray. Most situations exist on a spectrum, not in extremes."
+    },
+    {
+      "id": "overgeneralization",
+      "name": "Overgeneralization",
+      "description": "Seeing a single negative event as a never-ending pattern of defeat using words like 'always' or 'never'.",
+      "examples": [
+        "I always mess things up",
+        "Nothing ever goes right for me",
+        "This always happens to me"
+      ],
+      "keywords": ["always", "never", "everyone", "nobody", "everything", "nothing", "every time"],
+      "reframe_prompt": "Consider specific instances rather than generalizing. One event doesn't define a pattern."
+    },
+    {
+      "id": "mental_filter",
+      "name": "Mental Filtering",
+      "description": "Picking out a single negative detail and dwelling on it exclusively, filtering out all positive aspects.",
+      "examples": [
+        "One person criticized my work, so the whole project is bad",
+        "I only notice the things that went wrong",
+        "I can't stop thinking about that one negative comment"
+      ],
+      "keywords": ["only", "just", "but", "except", "ruined by"],
+      "reframe_prompt": "Try to see the full picture. What positive aspects might you be overlooking?"
+    },
+    {
+      "id": "disqualifying_positive",
+      "name": "Disqualifying the Positive",
+      "description": "Rejecting positive experiences by insisting they 'don't count' for some reason.",
+      "examples": [
+        "They only said that to be nice",
+        "That success was just luck",
+        "Anyone could have done that"
+      ],
+      "keywords": ["just luck", "doesn't count", "anyone could", "only because", "they had to"],
+      "reframe_prompt": "Accept compliments and positive outcomes at face value. You deserve credit for your achievements."
+    },
+    {
+      "id": "jumping_to_conclusions",
+      "name": "Jumping to Conclusions",
+      "description": "Making negative interpretations without actual evidence. This includes mind reading (assuming you know what others think) and fortune telling (predicting things will turn out badly).",
+      "examples": [
+        "They didn't text back, so they must hate me",
+        "I know this presentation will be a disaster",
+        "She looked at me funny, she must be judging me"
+      ],
+      "keywords": ["they think", "they must", "probably", "definitely will", "I know they", "I bet"],
+      "reframe_prompt": "Check the evidence. What facts support or contradict your conclusion?"
+    },
+    {
+      "id": "magnification",
+      "name": "Magnification / Catastrophizing",
+      "description": "Exaggerating the importance of things (like your mistakes or someone else's achievements), or minimizing things (your own desirable qualities).",
+      "examples": [
+        "This mistake will ruin my entire career",
+        "If I fail this test, my life is over",
+        "This is the worst thing that could happen"
+      ],
+      "keywords": ["terrible", "awful", "horrible", "catastrophe", "disaster", "worst", "end of the world", "ruin"],
+      "reframe_prompt": "Put things in perspective. How will this matter in a week, month, or year?"
+    },
+    {
+      "id": "emotional_reasoning",
+      "name": "Emotional Reasoning",
+      "description": "Assuming that your negative emotions reflect reality: 'I feel it, therefore it must be true.'",
+      "examples": [
+        "I feel stupid, so I must be stupid",
+        "I feel guilty, so I must have done something wrong",
+        "I feel overwhelmed, so my problems must be impossible to solve"
+      ],
+      "keywords": ["I feel like", "I feel that", "I feel so"],
+      "reframe_prompt": "Feelings are not facts. What objective evidence exists separate from how you feel?"
+    },
+    {
+      "id": "should_statements",
+      "name": "Should Statements",
+      "description": "Using 'should', 'must', or 'ought' statements to motivate yourself or others, leading to guilt and frustration.",
+      "examples": [
+        "I should be better at this by now",
+        "I must not make any mistakes",
+        "They should know how I feel"
+      ],
+      "keywords": ["should", "must", "ought to", "have to", "need to", "supposed to"],
+      "reframe_prompt": "Replace 'should' with 'could' or 'would like to'. Be gentle with yourself and others."
+    },
+    {
+      "id": "labeling",
+      "name": "Labeling",
+      "description": "Attaching a negative label to yourself or others instead of describing the specific behavior.",
+      "examples": [
+        "I'm such a loser",
+        "I'm an idiot",
+        "They're a terrible person"
+      ],
+      "keywords": ["I'm a", "I'm such a", "I'm so", "they're a", "what a"],
+      "reframe_prompt": "Separate the behavior from the person. You made a mistake - that doesn't define who you are."
+    },
+    {
+      "id": "personalization",
+      "name": "Personalization",
+      "description": "Seeing yourself as the cause of negative external events that you were not primarily responsible for.",
+      "examples": [
+        "It's my fault the team failed",
+        "If only I had done something different, this wouldn't have happened",
+        "They're upset because of me"
+      ],
+      "keywords": ["my fault", "because of me", "I caused", "I made them", "if only I"],
+      "reframe_prompt": "Consider all factors that contributed. Most outcomes involve multiple causes beyond your control."
+    }
+  ]
+}

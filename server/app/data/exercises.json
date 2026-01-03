@@ -1,0 +1,191 @@
+{
+  "exercises": [
+    {
+      "id": "thought_record",
+      "name": "Thought Record",
+      "category": "cognitive_restructuring",
+      "duration_minutes": 10,
+      "description": "A structured way to examine and challenge negative thoughts by writing down the situation, your thoughts, emotions, evidence for/against, and a balanced alternative thought.",
+      "steps": [
+        "Describe the situation that triggered your negative thought",
+        "Write down the automatic negative thought",
+        "Identify the emotions you felt and rate their intensity (0-100)",
+        "List evidence that supports the thought",
+        "List evidence that contradicts the thought",
+        "Write a more balanced, realistic thought",
+        "Re-rate your emotions after this exercise"
+      ],
+      "helpful_for": ["all_or_nothing", "overgeneralization", "jumping_to_conclusions", "mental_filter"],
+      "tips": "Be specific and objective. Treat yourself like you would a friend facing the same situation."
+    },
+    {
+      "id": "evidence_examination",
+      "name": "Evidence Examination",
+      "category": "cognitive_restructuring",
+      "duration_minutes": 5,
+      "description": "Challenge a negative thought by examining the actual evidence for and against it, like a detective or scientist.",
+      "steps": [
+        "Write down the negative thought clearly",
+        "Ask: What evidence supports this thought being TRUE?",
+        "Ask: What evidence suggests this thought might be FALSE or exaggerated?",
+        "Based on all evidence, write a more accurate thought"
+      ],
+      "helpful_for": ["jumping_to_conclusions", "overgeneralization", "mental_filter", "magnification"],
+      "tips": "Stick to facts, not feelings. Only include evidence that would hold up in court."
+    },
+    {
+      "id": "perspective_shift",
+      "name": "Perspective Shift",
+      "category": "cognitive_restructuring",
+      "duration_minutes": 5,
+      "description": "View the situation from different angles to gain a more balanced perspective.",
+      "steps": [
+        "Describe your current thought/interpretation",
+        "How would a supportive friend view this situation?",
+        "How might you view this in 5 years?",
+        "What would you tell a friend who had this thought?",
+        "Write a new perspective based on these viewpoints"
+      ],
+      "helpful_for": ["magnification", "emotional_reasoning", "labeling", "personalization"],
+      "tips": "Imagine actually having these conversations. What specific words would you or others use?"
+    },
+    {
+      "id": "grounding_54321",
+      "name": "5-4-3-2-1 Grounding",
+      "category": "mindfulness",
+      "duration_minutes": 3,
+      "description": "A sensory awareness technique to bring you back to the present moment when feeling overwhelmed.",
+      "steps": [
+        "Name 5 things you can SEE around you",
+        "Name 4 things you can TOUCH or feel",
+        "Name 3 things you can HEAR",
+        "Name 2 things you can SMELL",
+        "Name 1 thing you can TASTE"
+      ],
+      "helpful_for": ["magnification", "emotional_reasoning"],
+      "tips": "Take your time with each sense. Really notice the details of what you're experiencing."
+    },
+    {
+      "id": "breathing_exercise",
+      "name": "Box Breathing",
+      "category": "mindfulness",
+      "duration_minutes": 4,
+      "description": "A simple breathing technique to calm your nervous system and reduce anxiety.",
+      "steps": [
+        "Breathe IN slowly for 4 counts",
+        "HOLD your breath for 4 counts",
+        "Breathe OUT slowly for 4 counts",
+        "HOLD empty for 4 counts",
+        "Repeat 4-6 times"
+      ],
+      "helpful_for": ["magnification", "emotional_reasoning"],
+      "tips": "Find a comfortable seated position. If 4 counts feels too long, start with 3."
+    },
+    {
+      "id": "behavioral_experiment",
+      "name": "Behavioral Experiment",
+      "category": "behavioral_activation",
+      "duration_minutes": 15,
+      "description": "Test out negative predictions by trying something and observing the actual outcome.",
+      "steps": [
+        "Identify a specific negative prediction you're making",
+        "Rate how strongly you believe it (0-100%)",
+        "Design a small experiment to test this prediction",
+        "Carry out the experiment",
+        "Record what actually happened",
+        "Compare the outcome to your prediction",
+        "Re-rate your belief in the original prediction"
+      ],
+      "helpful_for": ["jumping_to_conclusions", "magnification", "all_or_nothing"],
+      "tips": "Start small. Choose something low-stakes to test first."
+    },
+    {
+      "id": "gratitude_practice",
+      "name": "Three Good Things",
+      "category": "positive_psychology",
+      "duration_minutes": 5,
+      "description": "Counter the brain's negativity bias by deliberately noticing positive experiences.",
+      "steps": [
+        "Write down 3 good things that happened today (big or small)",
+        "For each one, note why it happened",
+        "Reflect on how each one made you feel",
+        "Consider how you contributed to making it happen"
+      ],
+      "helpful_for": ["mental_filter", "disqualifying_positive", "overgeneralization"],
+      "tips": "They don't need to be big things. A nice cup of coffee or a friendly smile counts."
+    },
+    {
+      "id": "compassionate_reframe",
+      "name": "Self-Compassion Break",
+      "category": "self_compassion",
+      "duration_minutes": 5,
+      "description": "Respond to difficult thoughts with kindness rather than criticism.",
+      "steps": [
+        "Acknowledge: 'This is a moment of suffering'",
+        "Recognize common humanity: 'Suffering is part of being human. Others feel this way too.'",
+        "Offer yourself kindness: Place your hand on your heart and say something kind to yourself",
+        "Ask: 'What do I need right now?' and try to provide it"
+      ],
+      "helpful_for": ["labeling", "should_statements", "personalization"],
+      "tips": "Use a warm, gentle tone with yourself. Imagine comforting a good friend."
+    },
+    {
+      "id": "should_to_could",
+      "name": "Should to Could",
+      "category": "cognitive_restructuring",
+      "duration_minutes": 3,
+      "description": "Transform rigid 'should' statements into flexible preferences.",
+      "steps": [
+        "Write down your 'should' statement",
+        "Rewrite it using 'I would prefer...' or 'I could...'",
+        "Notice how the new statement feels different",
+        "Consider what options this new framing opens up"
+      ],
+      "helpful_for": ["should_statements"],
+      "tips": "Shoulds create pressure; preferences create possibility. Notice the difference in your body."
+    },
+    {
+      "id": "responsibility_pie",
+      "name": "Responsibility Pie",
+      "category": "cognitive_restructuring",
+      "duration_minutes": 8,
+      "description": "Visually divide responsibility for an outcome among all contributing factors.",
+      "steps": [
+        "Describe the negative outcome you're blaming yourself for",
+        "List ALL factors that contributed (other people, circumstances, timing, etc.)",
+        "Assign a percentage to each factor (must total 100%)",
+        "Draw a pie chart showing the distribution",
+        "Notice what percentage is realistically yours"
+      ],
+      "helpful_for": ["personalization"],
+      "tips": "List external factors first before assigning your share. Be honest about things outside your control."
+    }
+  ],
+  "categories": [
+    {
+      "id": "cognitive_restructuring",
+      "name": "Cognitive Restructuring",
+      "description": "Techniques to identify and change unhelpful thought patterns"
+    },
+    {
+      "id": "mindfulness",
+      "name": "Mindfulness & Grounding",
+      "description": "Practices to stay present and manage overwhelming emotions"
+    },
+    {
+      "id": "behavioral_activation",
+      "name": "Behavioral Activation",
+      "description": "Action-based techniques to test and change unhelpful patterns"
+    },
+    {
+      "id": "positive_psychology",
+      "name": "Positive Psychology",
+      "description": "Exercises to build positive emotions and resilience"
+    },
+    {
+      "id": "self_compassion",
+      "name": "Self-Compassion",
+      "description": "Practices to treat yourself with kindness and understanding"
+    }
+  ]
+}

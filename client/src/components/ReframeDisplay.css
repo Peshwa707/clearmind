@@ -1,0 +1,128 @@
+.reframe-display {
+  margin-top: 24px;
+}
+
+.compassionate-message {
+  display: flex;
+  gap: 16px;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, var(--color-warm-light) 0%, var(--color-accent-light) 100%);
+  border-radius: var(--radius-lg);
+  margin-bottom: 24px;
+}
+
+.message-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent);
+  color: white;
+  border-radius: 50%;
+}
+
+.compassionate-message p {
+  color: var(--color-text);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.reframes-section {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.reframes-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 20px;
+}
+
+.reframes-title svg {
+  color: var(--color-warning);
+}
+
+.reframes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.reframe-card {
+  display: flex;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--color-warm-light);
+  border-radius: var(--radius-md);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.reframe-card:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-sm);
+}
+
+.reframe-number {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-secondary);
+  color: white;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.reframe-content {
+  flex: 1;
+}
+
+.reframe-perspective {
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 8px 0;
+  font-weight: 500;
+}
+
+.reframe-explanation {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.reframe-explanation svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--color-secondary);
+}
+
+@media (max-width: 600px) {
+  .compassionate-message {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .reframe-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

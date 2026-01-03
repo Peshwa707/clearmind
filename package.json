@@ -1,0 +1,18 @@
+{
+  "name": "clearmind",
+  "version": "1.0.0",
+  "description": "AI-powered CBT app for identifying cognitive distortions and reframing negative thoughts",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "client": "cd client && npm run dev",
+    "server": "cd server && python -m uvicorn app.main:app --reload --port 8000",
+    "install:all": "npm install && cd client && npm install && cd ../server && pip install -r requirements.txt",
+    "build": "cd client && npm run build"
+  },
+  "keywords": ["cbt", "mental-health", "cognitive-distortions", "therapy", "ai"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
