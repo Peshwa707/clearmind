@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List, Dict, Optional
 
-from app.services.chat_service import get_chat_response, summarize_session
+from app.services.chat_service import get_chat_response, summarize_session, categorize_thought
 
 router = APIRouter()
 
@@ -19,6 +19,10 @@ class ChatRequest(BaseModel):
 
 class SummarizeRequest(BaseModel):
     conversation_history: List[Message]
+
+
+class CategorizeRequest(BaseModel):
+    thought: str
 
 
 @router.post("/chat")
@@ -57,5 +61,19 @@ async def summarize(request: SummarizeRequest):
 
     if not result.get("success"):
         raise HTTPException(status_code=500, detail="Failed to generate summary")
+
+    return result
+
+
+@router.post("/chat/categorize")
+async def categorize(request: CategorizeRequest):
+    """
+    Categorize a thought snippet into themes and emotions.
+    Used for ambient listening mode.
+    """
+    if not request.thought or len(request.thought.strip()) < 5:
+        raise HTTPException(status_code=400, detail="Thought too short to categorize")
+
+    result = await categorize_thought(request.thought)
 
     return result

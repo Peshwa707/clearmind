@@ -1,13 +1,16 @@
-import { useEffect, useRef } from 'react'
-import { MessageCircle, AlertCircle } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { MessageCircle, AlertCircle, Mic, MessageSquare } from 'lucide-react'
 import ChatMessage from '../components/ChatMessage'
 import ChatInput from '../components/ChatInput'
 import SessionSummary from '../components/SessionSummary'
+import AmbientMode from '../components/AmbientMode'
 import { useChat } from '../hooks/useChat'
 import { useChatSessions } from '../hooks/useLocalStorage'
 import './Home.css'
 
 export function Home() {
+  const [mode, setMode] = useState('chat') // 'chat' or 'ambient'
+
   const {
     messages,
     isLoading,
@@ -30,14 +33,32 @@ export function Home() {
   }, [messages])
 
   const handleSaveAndNew = () => {
-    // Save the session
     const sessionData = getSessionData()
     saveSession(sessionData)
-
-    // Start fresh
     startNewSession()
   }
 
+  const handleAmbientSave = (sessionData) => {
+    saveSession(sessionData)
+  }
+
+  const handleAmbientEnd = () => {
+    setMode('chat')
+  }
+
+  // Ambient Mode
+  if (mode === 'ambient') {
+    return (
+      <div className="home-page">
+        <AmbientMode
+          onEnd={handleAmbientEnd}
+          onSave={handleAmbientSave}
+        />
+      </div>
+    )
+  }
+
+  // Chat Mode
   return (
     <div className="home-page chat-page">
       <div className="chat-header">
@@ -48,6 +69,24 @@ export function Home() {
           <h1>Clear Your Mind</h1>
           <p>Talk through what's on your mind</p>
         </div>
+      </div>
+
+      {/* Mode Toggle */}
+      <div className="mode-toggle">
+        <button
+          className={`mode-btn ${mode === 'chat' ? 'active' : ''}`}
+          onClick={() => setMode('chat')}
+        >
+          <MessageSquare size={16} />
+          Chat
+        </button>
+        <button
+          className={`mode-btn ${mode === 'ambient' ? 'active' : ''}`}
+          onClick={() => setMode('ambient')}
+        >
+          <Mic size={16} />
+          Ambient
+        </button>
       </div>
 
       <div className="chat-container">

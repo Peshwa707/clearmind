@@ -212,6 +212,91 @@ def get_fallback_response(message: str, history: List[Dict]) -> Dict:
     }
 
 
+async def categorize_thought(thought: str) -> Dict:
+    """
+    Categorize a single thought/rambling into themes and emotions.
+    Used for ambient listening mode.
+    """
+    client = get_anthropic_client()
+
+    if client is None or len(thought.strip()) < 10:
+        return get_fallback_categorization(thought)
+
+    try:
+        response = client.messages.create(
+            model="claude-3-haiku-20240307",
+            max_tokens=200,
+            messages=[{
+                "role": "user",
+                "content": f"""Categorize this thought snippet. Respond in JSON only:
+{{
+    "themes": ["theme1"],
+    "emotions": ["emotion1"],
+    "key_phrase": "short summary phrase"
+}}
+
+Themes: work, relationships, family, health, finance, social, future, self, past, other
+Emotions: anxious, overwhelmed, sad, angry, frustrated, confused, hopeful, relieved, neutral
+
+Thought: "{thought}"
+
+JSON:"""
+            }]
+        )
+
+        result = json.loads(response.content[0].text)
+        return {
+            "success": True,
+            "themes": result.get("themes", ["general"])[:2],
+            "emotions": result.get("emotions", ["neutral"])[:2],
+            "key_phrase": result.get("key_phrase", thought[:50])
+        }
+
+    except Exception as e:
+        print(f"Categorization error: {e}")
+        return get_fallback_categorization(thought)
+
+
+def get_fallback_categorization(thought: str) -> Dict:
+    """Fallback categorization using keywords."""
+    thought_lower = thought.lower()
+
+    themes = []
+    theme_keywords = {
+        "work": ["work", "job", "boss", "deadline", "project", "meeting"],
+        "relationships": ["relationship", "partner", "boyfriend", "girlfriend"],
+        "family": ["family", "mom", "dad", "parent", "kid", "child"],
+        "health": ["health", "sick", "tired", "sleep", "doctor"],
+        "finance": ["money", "bills", "pay", "afford", "debt"],
+        "future": ["future", "tomorrow", "plan", "goal", "worried about"],
+        "self": ["myself", "I am", "I feel", "I think", "I need"],
+    }
+
+    for theme, keywords in theme_keywords.items():
+        if any(kw in thought_lower for kw in keywords):
+            themes.append(theme)
+
+    emotions = []
+    emotion_keywords = {
+        "anxious": ["anxious", "worried", "nervous", "stress"],
+        "overwhelmed": ["overwhelmed", "too much", "can't handle"],
+        "frustrated": ["frustrated", "annoyed", "stuck"],
+        "sad": ["sad", "down", "depressed"],
+        "confused": ["confused", "don't know", "unclear"],
+    }
+
+    for emotion, keywords in emotion_keywords.items():
+        if any(kw in thought_lower for kw in keywords):
+            emotions.append(emotion)
+
+    return {
+        "success": True,
+        "themes": themes[:2] if themes else ["general"],
+        "emotions": emotions[:2] if emotions else ["neutral"],
+        "key_phrase": thought[:50] + ("..." if len(thought) > 50 else "")
+    }
+
+
 def get_fallback_summary(conversation_history: List[Dict]) -> Dict:
     """Fallback summary when AI is unavailable."""
     # Count user messages to estimate themes
