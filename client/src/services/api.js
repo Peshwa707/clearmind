@@ -1,7 +1,7 @@
 import { Capacitor } from '@capacitor/core';
 
 // Railway backend URL
-const RAILWAY_API_URL = 'https://clearmind-production.up.railway.app';
+const RAILWAY_API_URL = 'https://clearmind-production-f34a.up.railway.app';
 
 // Get the appropriate API base URL based on platform
 export function getApiBaseUrl() {
