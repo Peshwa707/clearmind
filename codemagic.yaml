@@ -3,6 +3,7 @@ workflows:
     name: ClearMind iOS
     max_build_duration: 60
     instance_type: mac_mini_m2
+    working_directory: client
     environment:
       node: 18
       xcode: latest
@@ -25,17 +26,19 @@ workflows:
           cd ios/App
           xcodebuild -workspace App.xcworkspace \
             -scheme App \
-            -configuration Release \
-            -sdk iphoneos \
-            -archivePath build/App.xcarchive \
-            archive
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            build
     artifacts:
-      - ios/App/build/**/*.xcarchive
+      - client/ios/App/build/**/*
 
   clearmind-android:
     name: ClearMind Android
     max_build_duration: 60
     instance_type: linux_x2
+    working_directory: client
     environment:
       node: 18
       java: 17
@@ -54,4 +57,4 @@ workflows:
           cd android
           ./gradlew assembleDebug
     artifacts:
-      - android/app/build/outputs/apk/**/*.apk
+      - client/android/app/build/outputs/apk/**/*.apk
