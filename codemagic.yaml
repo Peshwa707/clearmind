@@ -54,5 +54,10 @@ workflows:
         script: |
           cd android
           bash gradlew assembleDebug
+      - name: Copy APK to output
+        script: |
+          mkdir -p /tmp/artifacts
+          cp android/app/build/outputs/apk/debug/app-debug.apk /tmp/artifacts/ClearMind.apk
+          echo "APK ready at /tmp/artifacts/ClearMind.apk"
     artifacts:
-      - client/android/app/build/outputs/apk/**/*.apk
+      - /tmp/artifacts/ClearMind.apk
