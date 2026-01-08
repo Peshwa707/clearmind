@@ -19,10 +19,16 @@ app = FastAPI(
 # Environment
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 
-# CORS configuration
-origins = ["http://localhost:3000", "http://localhost:5173"]
+# CORS configuration - include Capacitor origins for mobile apps
+origins = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost",
+    "capacitor://localhost",
+    "https://localhost",
+]
 if ENVIRONMENT == "production":
-    origins = ["*"]  # Allow all in production (served from same domain)
+    origins = ["*"]  # Allow all in production
 
 app.add_middleware(
     CORSMiddleware,
