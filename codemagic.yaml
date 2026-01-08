@@ -26,10 +26,11 @@ workflows:
             -configuration Debug \
             -sdk iphonesimulator \
             -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build \
             CODE_SIGNING_ALLOWED=NO \
             build
     artifacts:
-      - client/ios/App/build/**/*
+      - client/ios/App/build/Build/Products/**/*.app
 
   clearmind-android:
     name: ClearMind Android
