@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { BarChart2, Calendar, TrendingUp, Trash2, LogIn, UserPlus } from 'lucide-react'
+import { BarChart2, Calendar, TrendingUp, Trash2, LogIn, UserPlus, Wifi, WifiOff, Cloud, Smartphone } from 'lucide-react'
 import { useThoughtHistory } from '../hooks/useLocalStorage'
 import { useAuth } from '../context/AuthContext'
 import './Progress.css'
 
 export function Progress() {
-  const { history, clearHistory, getRecentDistortions, totalEntries } = useThoughtHistory()
-  const { isAuthenticated, login, register, user } = useAuth()
+  const { history, clearHistory, getRecentDistortions, totalEntries, loading: historyLoading } = useThoughtHistory()
+  const { isAuthenticated, login, register, user, authMode: currentAuthMode, isOnline, logout } = useAuth()
   const [showAuthForm, setShowAuthForm] = useState(false)
   const [authMode, setAuthMode] = useState('login')
   const [authError, setAuthError] = useState('')
@@ -57,6 +57,32 @@ export function Progress() {
         <h1>Your Progress</h1>
         <p>Track your thought patterns and see how you're growing</p>
       </div>
+
+      {/* Network Status Indicator */}
+      <div className={`network-status ${isOnline ? 'online' : 'offline'}`}>
+        {isOnline ? <Wifi size={16} /> : <WifiOff size={16} />}
+        <span>{isOnline ? 'Online' : 'Offline'}</span>
+        {isAuthenticated && (
+          <>
+            <span className="status-divider">|</span>
+            {currentAuthMode === 'local' ? <Smartphone size={16} /> : <Cloud size={16} />}
+            <span>{currentAuthMode === 'local' ? 'Local Account' : 'Cloud Synced'}</span>
+          </>
+        )}
+      </div>
+
+      {/* User Info when authenticated */}
+      {isAuthenticated && user && (
+        <div className="user-info-card">
+          <div className="user-details">
+            <span className="user-name">{user.name || user.email}</span>
+            <span className="user-email">{user.email}</span>
+          </div>
+          <button className="btn-logout" onClick={logout}>
+            Sign Out
+          </button>
+        </div>
+      )}
 
       {!isAuthenticated && (
         <div className="auth-prompt">

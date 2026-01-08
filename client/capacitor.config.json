@@ -1,0 +1,15 @@
+{
+  "appId": "com.clearmind.app",
+  "appName": "ClearMind",
+  "webDir": "dist",
+  "plugins": {
+    "CapacitorSQLite": {
+      "iosDatabaseLocation": "Library/CapacitorDatabase",
+      "iosIsEncryption": false,
+      "androidIsEncryption": false
+    }
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}

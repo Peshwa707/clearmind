@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ClearMind</string>
+    <string name="title_activity_main">ClearMind</string>
+    <string name="package_name">com.clearmind.app</string>
+    <string name="custom_url_scheme">com.clearmind.app</string>
+</resources>
