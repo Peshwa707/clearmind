@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import os
 from pathlib import Path
 
-from app.routers import thoughts, exercises, auth
+from app.routers import thoughts, exercises, auth, chat
 
 load_dotenv()
 
@@ -42,6 +42,7 @@ app.add_middleware(
 app.include_router(thoughts.router, prefix="/api", tags=["Thoughts"])
 app.include_router(exercises.router, prefix="/api", tags=["Exercises"])
 app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
+app.include_router(chat.router, prefix="/api", tags=["Chat"])
 
 
 @app.get("/health")

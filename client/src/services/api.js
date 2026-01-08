@@ -18,6 +18,8 @@ export function getApiBaseUrl() {
 export const API_ENDPOINTS = {
   analyze: () => `${getApiBaseUrl()}/api/analyze`,
   exercises: () => `${getApiBaseUrl()}/api/exercises`,
+  chat: () => `${getApiBaseUrl()}/api/chat`,
+  chatSummarize: () => `${getApiBaseUrl()}/api/chat/summarize`,
   auth: {
     login: () => `${getApiBaseUrl()}/api/auth/login`,
     register: () => `${getApiBaseUrl()}/api/auth/register`,

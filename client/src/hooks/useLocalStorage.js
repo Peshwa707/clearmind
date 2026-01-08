@@ -242,4 +242,121 @@ export function useExerciseProgress() {
   }
 }
 
+/**
+ * Hook for managing chat sessions
+ */
+export function useChatSessions() {
+  const [sessions, setSessions] = useState([])
+  const [loading, setLoading] = useState(true)
+  const { user, dbReady } = useAuth()
+  const isNative = Capacitor.getPlatform() !== 'web'
+
+  useEffect(() => {
+    const loadSessions = async () => {
+      setLoading(true)
+      try {
+        if (user && dbReady) {
+          const dbSessions = await databaseService.getChatSessions(user.id)
+          setSessions(dbSessions)
+        } else if (!isNative) {
+          const stored = localStorage.getItem('clearmind_chat_sessions')
+          setSessions(stored ? JSON.parse(stored) : [])
+        } else {
+          setSessions([])
+        }
+      } catch (error) {
+        console.error('Error loading chat sessions:', error)
+        const stored = localStorage.getItem('clearmind_chat_sessions')
+        setSessions(stored ? JSON.parse(stored) : [])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadSessions()
+  }, [user, dbReady, isNative])
+
+  const saveSession = useCallback(async (session) => {
+    try {
+      if (user && dbReady) {
+        await databaseService.saveChatSession(user.id, session)
+      }
+    } catch (error) {
+      console.error('Error saving chat session to database:', error)
+    }
+
+    setSessions(prev => {
+      const updated = [session, ...prev].slice(0, 50) // Keep last 50 sessions
+      if (!isNative) {
+        localStorage.setItem('clearmind_chat_sessions', JSON.stringify(updated))
+      }
+      return updated
+    })
+
+    return session
+  }, [user, dbReady, isNative])
+
+  const deleteSession = useCallback(async (sessionId) => {
+    try {
+      if (user && dbReady) {
+        await databaseService.deleteChatSession(sessionId, user.id)
+      }
+    } catch (error) {
+      console.error('Error deleting chat session:', error)
+    }
+
+    setSessions(prev => {
+      const updated = prev.filter(s => s.id !== sessionId)
+      if (!isNative) {
+        localStorage.setItem('clearmind_chat_sessions', JSON.stringify(updated))
+      }
+      return updated
+    })
+  }, [user, dbReady, isNative])
+
+  const getSessionsByTheme = useCallback((theme) => {
+    return sessions.filter(s => s.themes?.includes(theme))
+  }, [sessions])
+
+  const getSessionsByEmotion = useCallback((emotion) => {
+    return sessions.filter(s => s.emotions?.includes(emotion))
+  }, [sessions])
+
+  const getThemeStats = useCallback(() => {
+    const themeCounts = {}
+    sessions.forEach(session => {
+      (session.themes || []).forEach(theme => {
+        themeCounts[theme] = (themeCounts[theme] || 0) + 1
+      })
+    })
+    return Object.entries(themeCounts)
+      .sort((a, b) => b[1] - a[1])
+      .map(([theme, count]) => ({ theme, count }))
+  }, [sessions])
+
+  const getEmotionStats = useCallback(() => {
+    const emotionCounts = {}
+    sessions.forEach(session => {
+      (session.emotions || []).forEach(emotion => {
+        emotionCounts[emotion] = (emotionCounts[emotion] || 0) + 1
+      })
+    })
+    return Object.entries(emotionCounts)
+      .sort((a, b) => b[1] - a[1])
+      .map(([emotion, count]) => ({ emotion, count }))
+  }, [sessions])
+
+  return {
+    sessions,
+    loading,
+    saveSession,
+    deleteSession,
+    getSessionsByTheme,
+    getSessionsByEmotion,
+    getThemeStats,
+    getEmotionStats,
+    totalSessions: sessions.length
+  }
+}
+
 export default useLocalStorage

@@ -74,9 +74,26 @@ class DatabaseService {
       );
     `;
 
+    const createChatSessionsTable = `
+      CREATE TABLE IF NOT EXISTS chat_sessions (
+        id TEXT PRIMARY KEY,
+        user_id INTEGER,
+        started_at DATETIME,
+        ended_at DATETIME,
+        messages TEXT,
+        themes TEXT,
+        emotions TEXT,
+        action_items TEXT,
+        summary TEXT,
+        synced INTEGER DEFAULT 0,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      );
+    `;
+
     await this.db.execute(createUsersTable);
     await this.db.execute(createThoughtsTable);
     await this.db.execute(createExercisesTable);
+    await this.db.execute(createChatSessionsTable);
   }
 
   // User operations
@@ -258,6 +275,88 @@ class DatabaseService {
     return Object.entries(stats)
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count);
+  }
+
+  // Chat session operations
+  async saveChatSession(userId, session) {
+    if (!this.isNative) {
+      return this.saveChatSessionLocalStorage(userId, session);
+    }
+
+    const query = `
+      INSERT OR REPLACE INTO chat_sessions
+      (id, user_id, started_at, ended_at, messages, themes, emotions, action_items, summary)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    await this.db.run(query, [
+      session.id,
+      userId,
+      session.started_at,
+      session.ended_at,
+      JSON.stringify(session.messages),
+      JSON.stringify(session.themes),
+      JSON.stringify(session.emotions),
+      JSON.stringify(session.action_items),
+      session.summary
+    ]);
+
+    return session;
+  }
+
+  async getChatSessions(userId, limit = 50) {
+    if (!this.isNative) {
+      return this.getChatSessionsLocalStorage(userId);
+    }
+
+    const query = `
+      SELECT * FROM chat_sessions
+      WHERE user_id = ?
+      ORDER BY ended_at DESC
+      LIMIT ?
+    `;
+    const result = await this.db.query(query, [userId, limit]);
+
+    return result.values.map(row => ({
+      id: row.id,
+      userId: row.user_id,
+      started_at: row.started_at,
+      ended_at: row.ended_at,
+      messages: JSON.parse(row.messages || '[]'),
+      themes: JSON.parse(row.themes || '[]'),
+      emotions: JSON.parse(row.emotions || '[]'),
+      action_items: JSON.parse(row.action_items || '[]'),
+      summary: row.summary,
+      synced: row.synced === 1
+    }));
+  }
+
+  async deleteChatSession(sessionId, userId) {
+    if (!this.isNative) {
+      return this.deleteChatSessionLocalStorage(sessionId, userId);
+    }
+
+    const query = `DELETE FROM chat_sessions WHERE id = ? AND user_id = ?`;
+    await this.db.run(query, [sessionId, userId]);
+  }
+
+  saveChatSessionLocalStorage(userId, session) {
+    const sessions = JSON.parse(localStorage.getItem('clearmind_chat_sessions') || '[]');
+    const entry = { ...session, userId };
+    sessions.unshift(entry);
+    localStorage.setItem('clearmind_chat_sessions', JSON.stringify(sessions.slice(0, 50)));
+    return entry;
+  }
+
+  getChatSessionsLocalStorage(userId) {
+    const sessions = JSON.parse(localStorage.getItem('clearmind_chat_sessions') || '[]');
+    return sessions.filter(s => s.userId === userId);
+  }
+
+  deleteChatSessionLocalStorage(sessionId, userId) {
+    const sessions = JSON.parse(localStorage.getItem('clearmind_chat_sessions') || '[]');
+    const filtered = sessions.filter(s => !(s.id === sessionId && s.userId === userId));
+    localStorage.setItem('clearmind_chat_sessions', JSON.stringify(filtered));
   }
 
   // LocalStorage fallback methods for web
