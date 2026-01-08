@@ -3,6 +3,7 @@ import { Mic, MicOff, Square, Tag, Heart, Clock, Pause, Play, Brain, List } from
 import { useVoiceInput } from '../hooks/useVoiceInput'
 import { useChatSessions } from '../hooks/useLocalStorage'
 import { API_ENDPOINTS, apiRequest } from '../services/api'
+import SessionDetail from '../components/SessionDetail'
 import './Home.css'
 
 // Theme colors
@@ -42,8 +43,18 @@ export function Home() {
   const [themeCounts, setThemeCounts] = useState({})
   const [emotionCounts, setEmotionCounts] = useState({})
   const [showLog, setShowLog] = useState(false)
+  const [selectedSession, setSelectedSession] = useState(null)
 
-  const { saveSession, sessions } = useChatSessions()
+  const {
+    saveSession,
+    sessions,
+    deleteSession,
+    updateThought,
+    deleteThought,
+    addReminderToThought,
+    addActionPlanToThought,
+    addDistortionAnalysisToThought
+  } = useChatSessions()
 
   const {
     isListening,
@@ -224,6 +235,36 @@ export function Home() {
     )
   }
 
+  // Handle session deletion
+  const handleDeleteSession = async (sessionId) => {
+    await deleteSession(sessionId)
+    setSelectedSession(null)
+  }
+
+  // Session Detail View
+  if (showLog && selectedSession) {
+    const session = sessions.find(s => s.id === selectedSession)
+    if (!session) {
+      setSelectedSession(null)
+      return null
+    }
+
+    return (
+      <div className="home-page ambient-page">
+        <SessionDetail
+          session={session}
+          onBack={() => setSelectedSession(null)}
+          onUpdateThought={updateThought}
+          onDeleteThought={deleteThought}
+          onDeleteSession={handleDeleteSession}
+          onAddReminder={addReminderToThought}
+          onAddActionPlan={addActionPlanToThought}
+          onAddDistortionAnalysis={addDistortionAnalysisToThought}
+        />
+      </div>
+    )
+  }
+
   // Thought Log View
   if (showLog) {
     return (
@@ -245,7 +286,11 @@ export function Home() {
             </div>
           ) : (
             sessions.map((session) => (
-              <div key={session.id} className="log-session">
+              <div
+                key={session.id}
+                className="log-session clickable"
+                onClick={() => setSelectedSession(session.id)}
+              >
                 <div className="session-header">
                   <span className="session-date">
                     {new Date(session.ended_at || session.started_at).toLocaleDateString([], {
@@ -284,16 +329,23 @@ export function Home() {
                 </div>
 
                 <div className="session-thoughts">
-                  {(session.thoughts || session.messages || []).slice(0, 5).map((thought, idx) => (
+                  {(session.thoughts || session.messages || []).slice(0, 3).map((thought, idx) => (
                     <p key={idx} className="thought-preview">
                       {thought.keyPhrase || thought.text || thought.content}
                     </p>
                   ))}
-                  {(session.thoughts || session.messages || []).length > 5 && (
+                  {(session.thoughts || session.messages || []).length > 3 && (
                     <span className="more-thoughts">
-                      +{(session.thoughts || session.messages || []).length - 5} more
+                      +{(session.thoughts || session.messages || []).length - 3} more
                     </span>
                   )}
+                </div>
+
+                <div className="session-footer">
+                  <span className="thought-count">
+                    {(session.thoughts || session.messages || []).length} thought{(session.thoughts || session.messages || []).length !== 1 ? 's' : ''}
+                  </span>
+                  <span className="tap-hint">Tap to view</span>
                 </div>
               </div>
             ))

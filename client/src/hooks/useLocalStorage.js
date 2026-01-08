@@ -314,6 +314,112 @@ export function useChatSessions() {
     })
   }, [user, dbReady, isNative])
 
+  const updateSession = useCallback(async (sessionId, updates) => {
+    setSessions(prev => {
+      const updated = prev.map(s =>
+        s.id === sessionId ? { ...s, ...updates } : s
+      )
+      if (!isNative) {
+        localStorage.setItem('clearmind_chat_sessions', JSON.stringify(updated))
+      }
+      return updated
+    })
+  }, [isNative])
+
+  const updateThought = useCallback(async (sessionId, thoughtId, updates) => {
+    setSessions(prev => {
+      const updated = prev.map(s => {
+        if (s.id !== sessionId) return s
+        return {
+          ...s,
+          thoughts: (s.thoughts || []).map(t =>
+            t.id === thoughtId ? { ...t, ...updates } : t
+          )
+        }
+      })
+      if (!isNative) {
+        localStorage.setItem('clearmind_chat_sessions', JSON.stringify(updated))
+      }
+      return updated
+    })
+  }, [isNative])
+
+  const deleteThought = useCallback(async (sessionId, thoughtId) => {
+    setSessions(prev => {
+      const updated = prev.map(s => {
+        if (s.id !== sessionId) return s
+        return {
+          ...s,
+          thoughts: (s.thoughts || []).filter(t => t.id !== thoughtId)
+        }
+      })
+      if (!isNative) {
+        localStorage.setItem('clearmind_chat_sessions', JSON.stringify(updated))
+      }
+      return updated
+    })
+  }, [isNative])
+
+  const addReminderToThought = useCallback(async (sessionId, thoughtId, reminder) => {
+    setSessions(prev => {
+      const updated = prev.map(s => {
+        if (s.id !== sessionId) return s
+        return {
+          ...s,
+          thoughts: (s.thoughts || []).map(t => {
+            if (t.id !== thoughtId) return t
+            return {
+              ...t,
+              reminders: [...(t.reminders || []), { id: Date.now(), ...reminder }]
+            }
+          })
+        }
+      })
+      if (!isNative) {
+        localStorage.setItem('clearmind_chat_sessions', JSON.stringify(updated))
+      }
+      return updated
+    })
+  }, [isNative])
+
+  const addActionPlanToThought = useCallback(async (sessionId, thoughtId, actionPlan) => {
+    setSessions(prev => {
+      const updated = prev.map(s => {
+        if (s.id !== sessionId) return s
+        return {
+          ...s,
+          thoughts: (s.thoughts || []).map(t => {
+            if (t.id !== thoughtId) return t
+            return { ...t, actionPlan }
+          })
+        }
+      })
+      if (!isNative) {
+        localStorage.setItem('clearmind_chat_sessions', JSON.stringify(updated))
+      }
+      return updated
+    })
+  }, [isNative])
+
+  const addDistortionAnalysisToThought = useCallback(async (sessionId, thoughtId, analysis) => {
+    setSessions(prev => {
+      const updated = prev.map(s => {
+        if (s.id !== sessionId) return s
+        return {
+          ...s,
+          thoughts: (s.thoughts || []).map(t => {
+            if (t.id !== thoughtId) return t
+            return { ...t, distortionAnalysis: analysis }
+          })
+        }
+      })
+      if (!isNative) {
+        localStorage.setItem('clearmind_chat_sessions', JSON.stringify(updated))
+      }
+      return updated
+    })
+  }, [isNative])
+
   const getSessionsByTheme = useCallback((theme) => {
     return sessions.filter(s => s.themes?.includes(theme))
   }, [sessions])
@@ -351,6 +457,12 @@ export function useChatSessions() {
     loading,
     saveSession,
     deleteSession,
+    updateSession,
+    updateThought,
+    deleteThought,
+    addReminderToThought,
+    addActionPlanToThought,
+    addDistortionAnalysisToThought,
     getSessionsByTheme,
     getSessionsByEmotion,
     getThemeStats,

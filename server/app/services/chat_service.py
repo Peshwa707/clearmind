@@ -297,6 +297,225 @@ def get_fallback_categorization(thought: str) -> Dict:
     }
 
 
+async def analyze_cognitive_distortions(thought: str) -> Dict:
+    """
+    Analyze a thought for cognitive distortions and provide reframes.
+    """
+    client = get_anthropic_client()
+
+    if client is None or len(thought.strip()) < 10:
+        return get_fallback_distortion_analysis(thought)
+
+    try:
+        response = client.messages.create(
+            model="claude-3-haiku-20240307",
+            max_tokens=500,
+            messages=[{
+                "role": "user",
+                "content": f"""Analyze this thought for cognitive distortions. Respond in JSON only:
+{{
+    "distortions": [
+        {{
+            "type": "distortion name",
+            "explanation": "brief explanation of how this distortion appears",
+            "reframe": "a healthier way to think about this"
+        }}
+    ],
+    "balanced_thought": "a more balanced version of the original thought"
+}}
+
+Common distortions: all-or-nothing thinking, catastrophizing, mind reading, fortune telling, emotional reasoning, should statements, labeling, personalization, mental filter, discounting positives
+
+Thought: "{thought}"
+
+JSON:"""
+            }]
+        )
+
+        result = json.loads(response.content[0].text)
+        return {
+            "success": True,
+            "distortions": result.get("distortions", []),
+            "balanced_thought": result.get("balanced_thought", thought)
+        }
+
+    except Exception as e:
+        print(f"Distortion analysis error: {e}")
+        return get_fallback_distortion_analysis(thought)
+
+
+def get_fallback_distortion_analysis(thought: str) -> Dict:
+    """Fallback distortion analysis using keywords."""
+    thought_lower = thought.lower()
+    distortions = []
+
+    # Simple pattern matching for common distortions
+    if any(word in thought_lower for word in ["always", "never", "everyone", "no one", "everything", "nothing"]):
+        distortions.append({
+            "type": "All-or-Nothing Thinking",
+            "explanation": "Using absolute terms like 'always' or 'never'",
+            "reframe": "Consider: Are there exceptions? Is the situation more nuanced?"
+        })
+
+    if any(word in thought_lower for word in ["worst", "terrible", "disaster", "catastrophe", "ruined"]):
+        distortions.append({
+            "type": "Catastrophizing",
+            "explanation": "Expecting the worst possible outcome",
+            "reframe": "What's a more realistic outcome? What would you tell a friend?"
+        })
+
+    if any(phrase in thought_lower for phrase in ["they think", "they must think", "everyone thinks"]):
+        distortions.append({
+            "type": "Mind Reading",
+            "explanation": "Assuming you know what others are thinking",
+            "reframe": "Do you have evidence for this? Could there be other explanations?"
+        })
+
+    if any(word in thought_lower for word in ["should", "must", "have to", "ought to"]):
+        distortions.append({
+            "type": "Should Statements",
+            "explanation": "Rigid rules about how things 'should' be",
+            "reframe": "Replace 'should' with 'I would prefer' or 'It would be nice if'"
+        })
+
+    if any(word in thought_lower for word in ["i feel like", "i feel that"]):
+        distortions.append({
+            "type": "Emotional Reasoning",
+            "explanation": "Treating feelings as facts",
+            "reframe": "Feelings are valid but not always accurate reflections of reality"
+        })
+
+    if not distortions:
+        distortions.append({
+            "type": "None detected",
+            "explanation": "No obvious cognitive distortions found",
+            "reframe": "This thought seems relatively balanced"
+        })
+
+    return {
+        "success": True,
+        "distortions": distortions,
+        "balanced_thought": "Consider the evidence and explore alternative perspectives."
+    }
+
+
+async def generate_action_plan(thought: str, context: str = "") -> Dict:
+    """
+    Break down a thought/concern into actionable steps.
+    """
+    client = get_anthropic_client()
+
+    if client is None or len(thought.strip()) < 10:
+        return get_fallback_action_plan(thought)
+
+    try:
+        response = client.messages.create(
+            model="claude-3-haiku-20240307",
+            max_tokens=400,
+            messages=[{
+                "role": "user",
+                "content": f"""Create an action plan for this concern. Respond in JSON only:
+{{
+    "goal": "the main goal or outcome",
+    "steps": [
+        {{
+            "action": "specific action to take",
+            "timeframe": "when to do it (today, this week, etc.)",
+            "difficulty": "easy/medium/hard"
+        }}
+    ],
+    "first_step": "the very first small action to take right now"
+}}
+
+Keep steps practical, specific, and achievable. Maximum 5 steps.
+
+Concern: "{thought}"
+{f"Additional context: {context}" if context else ""}
+
+JSON:"""
+            }]
+        )
+
+        result = json.loads(response.content[0].text)
+        return {
+            "success": True,
+            "goal": result.get("goal", "Address the concern"),
+            "steps": result.get("steps", []),
+            "first_step": result.get("first_step", "Take a moment to reflect on what you can control")
+        }
+
+    except Exception as e:
+        print(f"Action plan error: {e}")
+        return get_fallback_action_plan(thought)
+
+
+def get_fallback_action_plan(thought: str) -> Dict:
+    """Fallback action plan generator."""
+    return {
+        "success": True,
+        "goal": "Work through this concern step by step",
+        "steps": [
+            {"action": "Write down the specific concern clearly", "timeframe": "today", "difficulty": "easy"},
+            {"action": "Identify what's in your control vs. what isn't", "timeframe": "today", "difficulty": "easy"},
+            {"action": "Choose one small action you can take", "timeframe": "this week", "difficulty": "medium"},
+            {"action": "Set a reminder to check progress", "timeframe": "next week", "difficulty": "easy"}
+        ],
+        "first_step": "Take 2 minutes to write down exactly what's bothering you"
+    }
+
+
+async def create_reminder(thought: str, note: str = "") -> Dict:
+    """
+    Generate a reminder suggestion based on a thought.
+    """
+    client = get_anthropic_client()
+
+    if client is None:
+        return {
+            "success": True,
+            "reminder_text": note or "Check in on this thought",
+            "suggested_time": "tomorrow morning",
+            "category": "reflection"
+        }
+
+    try:
+        response = client.messages.create(
+            model="claude-3-haiku-20240307",
+            max_tokens=150,
+            messages=[{
+                "role": "user",
+                "content": f"""Create a gentle reminder for someone who had this thought. Respond in JSON:
+{{
+    "reminder_text": "encouraging reminder message",
+    "suggested_time": "when to remind (e.g., tomorrow morning, in 3 days)",
+    "category": "reflection/action/check-in"
+}}
+
+Thought: "{thought}"
+{f"User note: {note}" if note else ""}
+
+JSON:"""
+            }]
+        )
+
+        result = json.loads(response.content[0].text)
+        return {
+            "success": True,
+            "reminder_text": result.get("reminder_text", "Check in on this thought"),
+            "suggested_time": result.get("suggested_time", "tomorrow"),
+            "category": result.get("category", "reflection")
+        }
+
+    except Exception as e:
+        print(f"Reminder error: {e}")
+        return {
+            "success": True,
+            "reminder_text": note or "Take a moment to reflect on your progress",
+            "suggested_time": "tomorrow morning",
+            "category": "reflection"
+        }
+
+
 def get_fallback_summary(conversation_history: List[Dict]) -> Dict:
     """Fallback summary when AI is unavailable."""
     # Count user messages to estimate themes

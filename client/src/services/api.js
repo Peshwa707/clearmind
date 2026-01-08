@@ -21,6 +21,9 @@ export const API_ENDPOINTS = {
   chat: () => `${getApiBaseUrl()}/api/chat`,
   chatSummarize: () => `${getApiBaseUrl()}/api/chat/summarize`,
   chatCategorize: () => `${getApiBaseUrl()}/api/chat/categorize`,
+  chatAnalyzeDistortions: () => `${getApiBaseUrl()}/api/chat/analyze-distortions`,
+  chatActionPlan: () => `${getApiBaseUrl()}/api/chat/action-plan`,
+  chatReminder: () => `${getApiBaseUrl()}/api/chat/reminder`,
   auth: {
     login: () => `${getApiBaseUrl()}/api/auth/login`,
     register: () => `${getApiBaseUrl()}/api/auth/register`,
