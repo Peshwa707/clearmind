@@ -5,7 +5,7 @@ workflows:
     instance_type: mac_mini_m2
     working_directory: client
     environment:
-      node: 18
+      node: 22
       xcode: latest
       cocoapods: default
     scripts:
@@ -40,7 +40,7 @@ workflows:
     instance_type: linux_x2
     working_directory: client
     environment:
-      node: 18
+      node: 22
       java: 17
     scripts:
       - name: Install dependencies
