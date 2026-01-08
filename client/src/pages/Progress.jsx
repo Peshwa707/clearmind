@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { BarChart2, Calendar, TrendingUp, Trash2, LogIn, UserPlus, Wifi, WifiOff, Cloud, Smartphone } from 'lucide-react'
+import { BarChart2, Calendar, TrendingUp, Trash2, LogIn, UserPlus } from 'lucide-react'
 import { useThoughtHistory } from '../hooks/useLocalStorage'
 import { useAuth } from '../context/AuthContext'
 import './Progress.css'
 
 export function Progress() {
-  const { history, clearHistory, getRecentDistortions, totalEntries, loading: historyLoading } = useThoughtHistory()
-  const { isAuthenticated, login, register, user, authMode: currentAuthMode, isOnline, logout } = useAuth()
+  const { history, clearHistory, getRecentDistortions, totalEntries } = useThoughtHistory()
+  const { isAuthenticated, login, register, user, logout } = useAuth()
   const [showAuthForm, setShowAuthForm] = useState(false)
   const [authMode, setAuthMode] = useState('login')
   const [authError, setAuthError] = useState('')
@@ -58,19 +58,6 @@ export function Progress() {
         <p>Track your thought patterns and see how you're growing</p>
       </div>
 
-      {/* Network Status Indicator */}
-      <div className={`network-status ${isOnline ? 'online' : 'offline'}`}>
-        {isOnline ? <Wifi size={16} /> : <WifiOff size={16} />}
-        <span>{isOnline ? 'Online' : 'Offline'}</span>
-        {isAuthenticated && (
-          <>
-            <span className="status-divider">|</span>
-            {currentAuthMode === 'local' ? <Smartphone size={16} /> : <Cloud size={16} />}
-            <span>{currentAuthMode === 'local' ? 'Local Account' : 'Cloud Synced'}</span>
-          </>
-        )}
-      </div>
-
       {/* User Info when authenticated */}
       {isAuthenticated && user && (
         <div className="user-info-card">
@@ -89,8 +76,8 @@ export function Progress() {
           <div className="auth-prompt-content">
             <h3>Save Your Progress</h3>
             <p>
-              Create an account to keep your history across devices and track your
-              long-term progress.
+              Create a local account to save your history and track your
+              long-term progress on this device.
             </p>
             <div className="auth-buttons">
               <button
@@ -225,8 +212,8 @@ export function Progress() {
             <form onSubmit={handleAuth}>
               {authMode === 'register' && (
                 <div className="form-group">
-                  <label htmlFor="name">Name (optional)</label>
-                  <input type="text" id="name" name="name" placeholder="Your name" />
+                  <label htmlFor="name">Name</label>
+                  <input type="text" id="name" name="name" placeholder="Your name" required />
                 </div>
               )}
 
@@ -248,8 +235,8 @@ export function Progress() {
                   id="password"
                   name="password"
                   required
-                  minLength={8}
-                  placeholder="At least 8 characters"
+                  minLength={6}
+                  placeholder="At least 6 characters"
                 />
               </div>
 
