@@ -28,7 +28,6 @@ RUN apt-get update && apt-get install -y \
 # Copy Python requirements and install
 COPY server/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir --upgrade anthropic
 
 # Copy server code
 COPY server/app ./app
