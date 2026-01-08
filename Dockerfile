@@ -26,11 +26,13 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy Python requirements and install
-COPY server/requirements.txt ./server/
-RUN pip install --no-cache-dir -r server/requirements.txt
+COPY server/requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade anthropic
 
 # Copy server code
-COPY server/ ./server/
+COPY server/app ./app
+COPY server/.env.example ./.env.example
 
 # Copy built frontend from build stage
 COPY --from=frontend-build /app/client/dist ./client/dist
@@ -38,9 +40,10 @@ COPY --from=frontend-build /app/client/dist ./client/dist
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 ENV ENVIRONMENT=production
+ENV PYTHONPATH=/app
 
 # Expose port (Railway sets $PORT)
 EXPOSE 8000
 
 # Start command (overridden by railway.json)
-CMD ["python", "-m", "uvicorn", "server.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

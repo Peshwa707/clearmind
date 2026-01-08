@@ -44,7 +44,12 @@ async def health_check():
 
 
 # Serve static files in production
-STATIC_DIR = Path(__file__).parent.parent.parent / "client" / "dist"
+# In Docker: /app/app/main.py -> /app/client/dist
+# Locally: server/app/main.py -> client/dist
+STATIC_DIR = Path(__file__).parent.parent / "client" / "dist"
+if not STATIC_DIR.exists():
+    # Try alternative path for local development
+    STATIC_DIR = Path(__file__).parent.parent.parent / "client" / "dist"
 
 if STATIC_DIR.exists():
     # Serve static assets
