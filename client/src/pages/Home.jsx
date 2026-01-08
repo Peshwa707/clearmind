@@ -5,6 +5,7 @@ import DistortionCard from '../components/DistortionCard'
 import ReframeDisplay from '../components/ReframeDisplay'
 import { ExerciseSuggestions } from '../components/ExerciseCard'
 import { useThoughtHistory } from '../hooks/useLocalStorage'
+import { API_ENDPOINTS } from '../services/api'
 import './Home.css'
 
 export function Home() {
@@ -16,7 +17,7 @@ export function Home() {
 
   useEffect(() => {
     // Fetch exercises for suggestions
-    fetch('/api/exercises')
+    fetch(API_ENDPOINTS.exercises())
       .then(res => res.json())
       .then(data => setExercises(data.exercises || []))
       .catch(err => console.error('Error fetching exercises:', err))
@@ -27,7 +28,7 @@ export function Home() {
     setError(null)
 
     try {
-      const response = await fetch('/api/analyze', {
+      const response = await fetch(API_ENDPOINTS.analyze(), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

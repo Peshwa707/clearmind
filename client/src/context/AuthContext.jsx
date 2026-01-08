@@ -2,11 +2,9 @@ import { createContext, useContext, useState, useEffect } from 'react'
 import { Capacitor } from '@capacitor/core'
 import databaseService from '../services/database'
 import { useNetworkStatus } from '../hooks/useOfflineSync'
+import { API_ENDPOINTS } from '../services/api'
 
 const AuthContext = createContext(null)
-
-// Use environment variable or fallback to relative URL
-const API_BASE = import.meta.env.VITE_API_URL || '/api/auth'
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
@@ -59,7 +57,7 @@ export function AuthProvider({ children }) {
 
   const fetchUser = async () => {
     try {
-      const res = await fetch(`${API_BASE}/me`, {
+      const res = await fetch(API_ENDPOINTS.auth.me(), {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -105,7 +103,7 @@ export function AuthProvider({ children }) {
     // Try online login first if connected
     if (isOnline) {
       try {
-        const res = await fetch(`${API_BASE}/login`, {
+        const res = await fetch(API_ENDPOINTS.auth.login(), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
@@ -141,7 +139,7 @@ export function AuthProvider({ children }) {
     // Try online registration first if connected
     if (isOnline) {
       try {
-        const res = await fetch(`${API_BASE}/register`, {
+        const res = await fetch(API_ENDPOINTS.auth.register(), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password, name })
